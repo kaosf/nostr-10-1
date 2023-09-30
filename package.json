@@ -13,5 +13,8 @@
     "luxon": "^3.4.3",
     "nostr-tools": "^1.16.0",
     "websocket-polyfill": "^0.0.3"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.3"
   }
 }
