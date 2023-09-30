@@ -1,1 +1,52 @@
+import { DateTime } from "luxon";
+import "websocket-polyfill";
+import { SimplePool, finishEvent } from "nostr-tools";
+import { readFileSync } from "fs";
 
+console.log(new Date(), "Launched");
+
+const privKey = readFileSync("config/nsec.txt", "utf-8").trim();
+const year = DateTime.now().year;
+const created_at = DateTime.fromISO(`${year}-10-01T09:00:00+09:00`).toUnixInteger();
+const content = "今日は天下一品の日です。";
+const event = finishEvent(
+  {
+    kind: 1,
+    created_at,
+    tags: [],
+    content,
+  },
+  privKey,
+);
+
+console.log(new Date(), "Event:", event);
+// process.exit(0); // For checking the event JSON.
+
+const pool = new SimplePool();
+const relays = ["wss://nostr.kaosfield.net", "wss://yabu.me"];
+await Promise.race([
+  Promise.allSettled(pool.publish(relays, event)),
+  new Promise((resolve) => {
+    setTimeout(
+      () => {
+        console.log(new Date(), "Timeout!");
+        resolve();
+      },
+      1 * 60 * 1000,
+    );
+  }),
+]);
+
+console.log(new Date(), "Done");
+
+/*
+Respect: https://twitter.com/10_1
+Icon source: https://pbs.twimg.com/profile_images/61049077/ten1_400x400.png
+SHA256 checksum of ten1_400x400.png: eca0f1ddf82e6a5328d888a913cc644d51e753f4ebc7c7da6e26d1d593c03b64
+Uploaded: https://image.nostr.build/eca0f1ddf82e6a5328d888a913cc644d51e753f4ebc7c7da6e26d1d593c03b64.png
+SHA256 checksum of eca...b64.png: 15207d0daa1d1860911225cdb5b0a01706bfd614b9cea2d77884d4ec9a201da5
+
+Public key:
+npub1u7lnc5esjepnvp0jqctxvxwrzvct64ls6pdjskvkwtgvha0j4m8s8p5y22
+e7bf3c533096433605f206166619c31330bd57f0d05b28599672d0cbf5f2aecf
+*/
