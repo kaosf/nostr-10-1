@@ -1,2 +1,5 @@
 /config/*
 !/config/.keep
+
+/out.txt
+/err.txt
