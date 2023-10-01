@@ -1,24 +1,12 @@
 import { DateTime } from "luxon";
 import "websocket-polyfill";
-import { SimplePool, finishEvent } from "nostr-tools";
+import { SimplePool } from "nostr-tools";
 import { readFileSync } from "fs";
 
 console.log(new Date(), "Launched");
 
-const privKey = readFileSync("config/nsec.txt", "utf-8").trim();
 const year = DateTime.now().year;
-const created_at = DateTime.fromISO(`${year}-10-01T09:00:00+09:00`).toUnixInteger();
-const content = "今日は天下一品の日です。";
-const event = finishEvent(
-  {
-    kind: 1,
-    created_at,
-    tags: [],
-    content,
-  },
-  privKey,
-);
-
+const event = JSON.parse(readFileSync(`archives/${year}.json`, "utf-8"));
 console.log(new Date(), "Event:", event);
 // process.exit(0); // For checking the event JSON.
 
