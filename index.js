@@ -20,7 +20,7 @@ await Promise.race([
         console.log(new Date(), "Timeout!");
         resolve();
       },
-      1 * 60 * 1000,
+      1 * 60 * 1000
     );
   }),
 ]);
