@@ -11,7 +11,7 @@ console.log(new Date(), "Event:", event);
 // process.exit(0); // For checking the event JSON.
 
 const pool = new SimplePool();
-const relays = ["wss://yabu.me", "relay-jp.nostr.wirednet.jp", "nrelay.c-stellar.net"];
+const relays = ["wss://yabu.me", "wss://relay-jp.nostr.wirednet.jp", "wss://nrelay.c-stellar.net"];
 await Promise.race([
   Promise.allSettled(pool.publish(relays, event)),
   new Promise((resolve) => {
