@@ -10,10 +10,8 @@ npm i
 
 ## How to publish
 
-Run at 2XXX-10-01T09:00:00+09:00.
-
 ```sh
-node index.js
+docker container run --restart=always -d kaosf/nostr-10-1
 ```
 
 ## Future events
