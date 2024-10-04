@@ -22,6 +22,7 @@ await Promise.race([
     setTimeout(
       () => {
         console.log(new Date(), "Timeout!");
+        pool.close();
         resolve();
       },
       1 * 60 * 1000,
