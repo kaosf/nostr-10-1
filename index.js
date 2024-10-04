@@ -13,14 +13,18 @@ console.log(new Date(), "Event:", event);
 const pool = new SimplePool();
 const relays = ["wss://yabu.me", "wss://relay-jp.nostr.wirednet.jp", "wss://nrelay.c-stellar.net"];
 await Promise.race([
-  Promise.allSettled(pool.publish(relays, event)),
+  new Promise((resolve) => {
+    Promise.allSettled(pool.publish(relays, event)).then((_results) => {
+      resolve();
+    });
+  }),
   new Promise((resolve) => {
     setTimeout(
       () => {
         console.log(new Date(), "Timeout!");
         resolve();
       },
-      1 * 60 * 1000
+      1 * 60 * 1000,
     );
   }),
 ]);
